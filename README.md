@@ -110,7 +110,7 @@ python app.py
 
 ---
 
-## Task 4 — GitHub and Render Deployment
+## Task 4 — GitHub
 
 ### 1. Push to GitHub
 
@@ -119,7 +119,7 @@ git init
 git add .
 git commit -m "Initial commit: heart disease prediction API"
 git branch -M main
-git remote add origin https://github.com/<your-username>/HeartDiseaseDeployment.git
+git remote add origin https://github.com/unbeatable951/HeartDiseaseDeployment.git
 git push -u origin main
 ```
 ## Task 5 — Conclusion
