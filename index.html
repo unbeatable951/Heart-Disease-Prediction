@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Heart Disease Predictor</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; }
+        .form-group { margin-bottom: 12px; }
+        label { display: inline-block; width: 120px; }
+        input { padding: 5px; width: 200px; }
+        button { padding: 10px 15px; margin-top: 10px; cursor: pointer; }
+        #result { margin-top: 20px; font-weight: bold; font-size: 1.1em; }
+    </style>
+</head>
+<body>
+    <h2>Heart Disease Prediction</h2>
+    <form id="prediction-form">
+        <div class="form-group"><label>Age:</label><input type="number" id="age" value="63" required></div>
+        <div class="form-group"><label>Sex (1/0):</label><input type="number" id="sex" value="1" required></div>
+        <div class="form-group"><label>CP (0-3):</label><input type="number" id="cp" value="3" required></div>
+        <div class="form-group"><label>Trestbps:</label><input type="number" id="trestbps" value="145" required></div>
+        <div class="form-group"><label>Cholesterol:</label><input type="number" id="chol" value="233" required></div>
+        <div class="form-group"><label>FBS (1/0):</label><input type="number" id="fbs" value="1" required></div>
+        <div class="form-group"><label>RestECG (0-2):</label><input type="number" id="restecg" value="0" required></div>
+        <div class="form-group"><label>Thalach:</label><input type="number" id="thalach" value="150" required></div>
+        <div class="form-group"><label>Exang (1/0):</label><input type="number" id="exang" value="0" required></div>
+        <div class="form-group"><label>Oldpeak:</label><input type="number" step="0.1" id="oldpeak" value="2.3" required></div>
+        <div class="form-group"><label>Slope (0-2):</label><input type="number" id="slope" value="0" required></div>
+        <div class="form-group"><label>CA (0-4):</label><input type="number" id="ca" value="0" required></div>
+        <div class="form-group"><label>Thal (0-3):</label><input type="number" id="thal" value="1" required></div>
+        <button type="submit">Predict</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('prediction-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const fields = ["age", "sex", "cp", "trestbps", "chol", "fbs", "restecg", "thalach", "exang", "oldpeak", "slope", "ca", "thal"];
+            const payload = {};
+            fields.forEach(f => payload[f] = parseFloat(document.getElementById(f).value));
+
+            const res = await fetch('/predict', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+            if (data.prediction) {
+                document.getElementById('result').innerText = `Result: ${data.prediction} (Probability: ${data.probability})`;
+            } else {
+                document.getElementById('result').innerText = `Error: ${data.error}`;
+            }
+        });
+    </script>
+</body>
+</html>
